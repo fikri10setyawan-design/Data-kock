@@ -50,13 +50,13 @@ with st.container():
     with st.form("form_kock"):
         col_depan, col_belakang = st.columns(2)
         with col_depan:
-            st.caption("Tim A (Kiri/Depan)")
-            p1 = st.selectbox("Pemain 1", list_pemain, index=0)
-            p2 = st.selectbox("Pemain 2", list_pemain, index=1)
+            st.caption("Tim A")
+            p1 = st.selectbox("Pemain A1", list_pemain, index=0)
+            p2 = st.selectbox("Pemain A2", list_pemain, index=1)
         with col_belakang:
-            st.caption("Tim B (Kanan/Belakang)")
-            p3 = st.selectbox("Pemain 3", list_pemain, index=2)
-            p4 = st.selectbox("Pemain 4", list_pemain, index=3)
+            st.caption("Tim B")
+            p3 = st.selectbox("Pemain B1", list_pemain, index=2)
+            p4 = st.selectbox("Pemain B2", list_pemain, index=3)
 
         submitted = st.form_submit_button("🏸 Submit (+1 Kock)")
 
@@ -149,4 +149,5 @@ with st.expander("👮 Admin Area (Stok & Reset)"):
             st.rerun()
         else:
             st.error("Password salah!")
+
 
