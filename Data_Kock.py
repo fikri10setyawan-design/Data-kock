@@ -79,6 +79,28 @@ with st.container():
             
             st.success(f"Berhasil! 1 Kock dicatat untuk: {', '.join(pemain_aktif)}")
             st.rerun() # Refresh halaman biar tabel di bawah update
+# --- TOMBOL UNDO (Hapus Input Terakhir) ---
+# Tombol ini ditaruh di luar form, biar bisa diklik kapan aja
+col_undo, col_dummy = st.columns([1, 3])
+with col_undo:
+    if st.button("↩️ Batalkan Input Terakhir"):
+        if len(existing_data) >= 4:
+            # Hapus 4 baris terakhir (karena 1 game = 4 baris data pemain)
+            # iloc[:-4] artinya ambil semua data KECUALI 4 terbawah
+            df_koreksi = existing_data.iloc[:-4]
+            
+            # Update ke Google Sheet
+            conn.update(worksheet="Log_Transaksi", data=df_koreksi)
+            
+            st.toast("Input terakhir berhasil dibatalkan! 🚮")
+            st.rerun()
+        elif len(existing_data) > 0:
+            # Jaga-jaga kalau datanya ganjil/sedikit (hapus semua sisa)
+            df_kosong = pd.DataFrame(columns=["Tanggal", "Jam", "Pemain", "Jumlah", "Keterangan"])
+            conn.update(worksheet="Log_Transaksi", data=df_kosong)
+            st.rerun()
+        else:
+            st.warning("Data sudah kosong, tidak ada yang bisa dihapus.")
 
 # --- BAGIAN REPORT (TABEL KLASEMEN) ---
 st.divider()
@@ -95,4 +117,30 @@ if not existing_data.empty:
     # Tampilkan tabelnya
     st.dataframe(rekap_sorted, hide_index=True, use_container_width=True)
 else:
+
     st.info("Belum ada data pemakaian. Yuk main!")
+# --- ADMIN AREA (RESET DATA) ---
+st.divider()
+with st.expander("⚠️ Admin Area (Reset Musim)"):
+    st.write("Area ini berbahaya. Hanya untuk admin!")
+    
+    # Input Password biar aman
+    password = st.text_input("Masukkan Password Admin", type="password")
+    
+    # Tombol Eksekusi
+    if st.button("🔥 Hapus Semua Data (Mulai Nol)"):
+        # Ganti "rahasia123" dengan password yang kamu mau
+        if password == "rahasia123":
+            # 1. Siapkan dataframe kosong (cuma header doang)
+            df_kosong = pd.DataFrame(columns=["Tanggal", "Jam", "Pemain", "Jumlah", "Keterangan"])
+            
+            # 2. Timpa data di Google Sheet dengan yang kosong
+            conn.update(worksheet="Log_Transaksi", data=df_kosong)
+            
+            st.success("Data berhasil di-reset! Musim baru dimulai.")
+            
+            # 3. Refresh halaman
+            st.rerun()
+        else:
+            st.error("Password salah! Jangan iseng ya.")
+        
