@@ -25,7 +25,7 @@ st.title("🏸 Kock Tracker")
 st.write("Catat pemakaian kock per game secara real-time.")
 
 # --- DAFTAR PEMAIN (Bisa diedit sesuka hati) ---
-list_pemain = ["Fikri", "Nopek", "Diki", "Sigit", "Mang Oco", "Agus", "Fatah", "Kholid", "Riski"]
+list_pemain = ["Fikri", "Nopek", "Diki", "Sigit", "Mang Oco", "Agus", "Fatah", "Kholid", "Riski", "Asfak", "FIkran", "Melandri", "Tarsono", "Bang Deny"]
 
 # --- BAGIAN INPUT (FORM LAPANGAN) ---
 with st.container():
@@ -144,3 +144,4 @@ with st.expander("⚠️ Admin Area (Reset Musim)"):
         else:
             st.error("Password salah! Jangan iseng ya.")
         
+
