@@ -43,16 +43,69 @@ with col_info2:
         st.success(f"✅ **Sisa Kock:**\n# {sisa_kock} / {total_isi}")
 
 # ==========================================
-# 2. KLASEMEN (DIPINDAHKAN KE TENGAH)
+# 2. KLASEMEN & RIWAYAT (DIPINDAHKAN KE TENGAH)
 # ==========================================
 st.write("---")
-st.subheader("📊 Klasemen Boros Kock")
+st.subheader("📊 Statistik & Riwayat")
+
 if not existing_data.empty:
-    rekap = existing_data.groupby("Pemain")["Jumlah"].sum().reset_index()
-    rekap_sorted = rekap.sort_values(by="Jumlah", ascending=False)
-    st.dataframe(rekap_sorted, hide_index=True, use_container_width=True)
+    tab1, tab2, tab3 = st.tabs(["Klasemen Total", "Riwayat Match", "Log Mentah"])
+    
+    with tab1:
+        # Bikin Pivot Table (Rekap) otomatis pakai Pandas
+        rekap = existing_data.groupby("Pemain")["Jumlah"].sum().reset_index()
+        # Urutkan dari yang paling boros
+        rekap_sorted = rekap.sort_values(by="Jumlah", ascending=False)
+        # Progress bar style untuk visualisasi
+        st.dataframe(
+            rekap_sorted, 
+            column_config={
+                "Jumlah": st.column_config.ProgressColumn(
+                    "Total Pemakaian",
+                    format="%d",
+                    min_value=0,
+                    max_value=int(rekap_sorted["Jumlah"].max() if not rekap_sorted.empty else 100),
+                )
+            },
+            hide_index=True, 
+            use_container_width=True
+        )
+
+    with tab2:
+        st.caption("Pertandingan diurutkan dari yang terbaru.")
+        # Logic Grouping Match
+        # 1. Group by Tanggal & Jam, lalu jadikan list pemain
+        df_match = existing_data.groupby(["Tanggal", "Jam"])["Pemain"].apply(list).reset_index()
+        
+        # 2. Urutkan berdasarkan waktu (terbaru diatas)
+        df_match = df_match.sort_values(by=["Tanggal", "Jam"], ascending=False)
+        
+        # 3. Format Tampilan
+        for index, row in df_match.iterrows():
+            tgl_jam = f"{row['Tanggal']} {row['Jam']}"
+            pemain = row['Pemain']
+            
+            # Pastikan datanya lengkap 4 orang
+            if len(pemain) == 4:
+                tim_a = f"{pemain[0]} & {pemain[1]}"
+                tim_b = f"{pemain[2]} & {pemain[3]}"
+                
+                with st.expander(f"🏸 Match: {tim_a} vs {tim_b} ({tgl_jam})"):
+                    st.markdown(f"""
+                    **Waktu:** {tgl_jam}  
+                    **Tim A:** {pemain[0]}, {pemain[1]}  
+                    **Tim B:** {pemain[2]}, {pemain[3]}  
+                    *Kock terpakai: 1 (Game Rutin)*
+                    """)
+            else:
+                st.warning(f"Data tidak lengkap pada {tgl_jam}: {', '.join(pemain)}")
+
+    with tab3:
+        # Tampilkan data mentah log
+        st.dataframe(existing_data.sort_values(by=["Tanggal", "Jam"], ascending=False), hide_index=True, use_container_width=True)
+
 else:
-    st.info("Belum ada data.")
+    st.info("Belum ada data pemakaian. Yuk main!")
 
 # ==========================================
 # 3. FORM INPUT PEMAIN (DIPINDAHKAN KE BAWAH)
