@@ -75,14 +75,14 @@ if not existing_data.empty:
         st.caption("Pertandingan diurutkan dari yang terbaru.")
         # Logic Grouping Match
         # 1. Group by Tanggal & Jam, lalu jadikan list pemain
-        df_match = existing_data.groupby(["Tanggal", "Jam"])["Pemain"].apply(list).reset_index()
+        df_match = existing_data.groupby(["Tanggal",])["Pemain"].apply(list).reset_index()
         
         # 2. Urutkan berdasarkan waktu (terbaru diatas)
-        df_match = df_match.sort_values(by=["Tanggal", "Jam"], ascending=False)
+        df_match = df_match.sort_values(by=["Tanggal",], ascending=False)
         
         # 3. Format Tampilan
         for index, row in df_match.iterrows():
-            tgl_jam = f"{row['Tanggal']} {row['Jam']}"
+            tgl_jam = f"{row['Tanggal']}"
             pemain = row['Pemain']
             
             # Pastikan datanya lengkap 4 orang
@@ -95,7 +95,7 @@ if not existing_data.empty:
                     **Waktu:** {tgl_jam}  
                     **Tim A:** {pemain[0]}, {pemain[1]}  
                     **Tim B:** {pemain[2]}, {pemain[3]}  
-                    *Kock terpakai: 1 (Game Rutin)*
+                    *Kock terpakai: 1*
                     """)
             else:
                 st.warning(f"Data tidak lengkap pada {tgl_jam}: {', '.join(pemain)}")
@@ -209,3 +209,4 @@ with st.expander("👮 Admin Area (Stok & Reset)"):
             st.rerun()
         else:
             st.error("Password salah!")
+
