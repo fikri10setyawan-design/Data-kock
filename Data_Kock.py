@@ -41,7 +41,7 @@ with col_info2:
         st.success(f"✅ **Sisa Kock:**\n# {sisa_kock} / {total_isi}")
 
 # --- FORM INPUT PEMAIN ---
-list_pemain = ["Fikri", "Nopek", "Diki", "Sigit", "Mang Oco", "Agus", "Fatah", "Kholid", "Riski"]
+list_pemain = ["Fikri", "Nopek", "Diki", "Sigit", "Mang Oco", "Agus", "Fatah", "Kholid", "Riski", "Bang Deny", "Andika (RT)", "Fikran"]
 
 with st.container():
     st.write("---")
@@ -149,5 +149,6 @@ with st.expander("👮 Admin Area (Stok & Reset)"):
             st.rerun()
         else:
             st.error("Password salah!")
+
 
 
