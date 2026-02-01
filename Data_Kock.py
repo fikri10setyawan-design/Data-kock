@@ -94,7 +94,7 @@ if not existing_data.empty:
                     st.markdown(f"""
                     **Tim A:** {pemain[0]}, {pemain[1]}  
                     **Tim B:** {pemain[2]}, {pemain[3]}  
-                    *Kock terpakai: 1 (Game Rutin)*
+                    *Kock terpakai: 1*
                     """)
             else:
                 st.warning(f"Data tidak lengkap pada {tgl}: {', '.join(pemain)}")
@@ -204,3 +204,4 @@ with st.expander("👮 Admin Area (Stok & Reset)"):
             st.rerun()
         else:
             st.error("Password salah!")
+
