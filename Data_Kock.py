@@ -176,7 +176,7 @@ with st.expander("👮 Admin Area (Stok & Reset)"):
     st.subheader("1. Buka Tabung Baru")
     with st.form("form_ganti_stok"):
         merk_baru = st.text_input("Merk Kock Baru", value=nama_kock_aktif)
-        stok_baru = st.number_input("Isi Full (biasanya 12)", min_value=1, value=12)
+        stok_baru = st.number_input("Isi Full (12)", min_value=1, value=12)
         
         if st.form_submit_button("Buka Tabung Baru"):
             df_status.at[0, "Nama_Kock"] = merk_baru
@@ -204,6 +204,7 @@ with st.expander("👮 Admin Area (Stok & Reset)"):
             st.rerun()
         else:
             st.error("Password salah!")
+
 
 
 
