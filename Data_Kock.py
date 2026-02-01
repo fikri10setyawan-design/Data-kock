@@ -49,7 +49,7 @@ st.write("---")
 st.subheader("📊 Statistik & Riwayat")
 
 if not existing_data.empty:
-    tab1, tab2, tab3 = st.tabs(["Klasemen Total", "Riwayat Match", "Log Mentah"])
+    tab1, tab2 = st.tabs(["Klasemen Total", "Riwayat Match"])
     
     with tab1:
         # Bikin Pivot Table (Rekap) otomatis pakai Pandas
@@ -75,14 +75,14 @@ if not existing_data.empty:
         st.caption("Pertandingan diurutkan dari yang terbaru.")
         # Logic Grouping Match
         # 1. Group by Tanggal & Jam, lalu jadikan list pemain
-        df_match = existing_data.groupby(["Tanggal",])["Pemain"].apply(list).reset_index()
+        df_match = existing_data.groupby(["Tanggal", "Jam"])["Pemain"].apply(list).reset_index()
         
         # 2. Urutkan berdasarkan waktu (terbaru diatas)
-        df_match = df_match.sort_values(by=["Tanggal",], ascending=False)
+        df_match = df_match.sort_values(by=["Tanggal", "Jam"], ascending=False)
         
         # 3. Format Tampilan
         for index, row in df_match.iterrows():
-            tgl_jam = f"{row['Tanggal']}"
+            tgl = row['Tanggal']
             pemain = row['Pemain']
             
             # Pastikan datanya lengkap 4 orang
@@ -90,19 +90,14 @@ if not existing_data.empty:
                 tim_a = f"{pemain[0]} & {pemain[1]}"
                 tim_b = f"{pemain[2]} & {pemain[3]}"
                 
-                with st.expander(f"🏸 Match: {tim_a} vs {tim_b} ({tgl_jam})"):
+                with st.expander(f"🏸 Match: {tim_a} vs {tim_b} ({tgl})"):
                     st.markdown(f"""
-                    **Waktu:** {tgl_jam}  
                     **Tim A:** {pemain[0]}, {pemain[1]}  
                     **Tim B:** {pemain[2]}, {pemain[3]}  
-                    *Kock terpakai: 1*
+                    *Kock terpakai: 1 (Game Rutin)*
                     """)
             else:
-                st.warning(f"Data tidak lengkap pada {tgl_jam}: {', '.join(pemain)}")
-
-    with tab3:
-        # Tampilkan data mentah log
-        st.dataframe(existing_data.sort_values(by=["Tanggal", "Jam"], ascending=False), hide_index=True, use_container_width=True)
+                st.warning(f"Data tidak lengkap pada {tgl}: {', '.join(pemain)}")
 
 else:
     st.info("Belum ada data pemakaian. Yuk main!")
@@ -209,4 +204,3 @@ with st.expander("👮 Admin Area (Stok & Reset)"):
             st.rerun()
         else:
             st.error("Password salah!")
-
