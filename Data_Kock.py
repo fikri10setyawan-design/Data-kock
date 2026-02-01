@@ -105,7 +105,7 @@ else:
 # ==========================================
 # 3. FORM INPUT PEMAIN (DIPINDAHKAN KE BAWAH)
 # ==========================================
-list_pemain = ["Fikri", "Nopek", "Diki", "Sigit", "Mang Oco", "Agus", "Fatah", "Kholid", "Riski"]
+list_pemain = ["Fikri", "Nopek", "Diki", "Sigit", "Mang Oco", "Agus", "Fatah", "Kholid", "Riski", "Fikran", "Andika(RT)", "Melandri"]
 list_pemain = sorted(list_pemain) # Optional: Urutkan abjad
 
 with st.container():
@@ -204,6 +204,7 @@ with st.expander("👮 Admin Area (Stok & Reset)"):
             st.rerun()
         else:
             st.error("Password salah!")
+
 
 
 
