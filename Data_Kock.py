@@ -195,7 +195,7 @@ with st.expander("👮 Admin Area (Stok & Reset)"):
     password = st.text_input("Password Admin", type="password")
     
     if st.button("🔥 Hapus Semua Data"):
-        if password == st.secrets["admin"]["password"]
+        if password == st.secrets["admin"]["password"]:
             # Kosongkan Log Transaksi
             df_kosong = pd.DataFrame(columns=["Tanggal", "Jam", "Pemain", "Jumlah", "Keterangan"])
             conn.update(worksheet="Log_Transaksi", data=df_kosong)
@@ -204,5 +204,6 @@ with st.expander("👮 Admin Area (Stok & Reset)"):
             st.rerun()
         else:
             st.error("Password salah!")
+
 
 
